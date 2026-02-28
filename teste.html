@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Instagram</title>
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+                border: 0px;
+                list-style: none;
+                font-family: "Poppins", sans-serif;
+            }
+            
+            :root {
+                --hover:#e6e3de;
+                --cinza:#696763;
+                --preto:#000000;
+                --branco:#ffffff;
+                --roxo:#aa00ff;
+                --rosa:#ff00aa;
+                --amarelo: #ffbf00;
+            }
+            
+            .header {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translate(-50%, 0%);
+                height: 150px;
+                width: 500px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .header-section {
+                padding: 12px 24px;
+            }
+            .header-items {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px
+            }
+            .header-story {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .header .story-profile-photo {
+                height: 80px;
+                width: 80px;
+                border: 2px solid var(--branco);
+                border-radius: 50%;
+                z-index: 2;
+            }
+            .header .header-story.own-profile::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, calc(-50% - 13px));
+                height: 88px;
+                width: 88px;
+                border-radius: 50%;
+                background-color: var(--cinza);
+                z-index: 1;
+            }
+            .header .header-story::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, calc(-50% - 13px));
+                height: 88px;
+                width: 88px;
+                border-radius: 50%;
+                background-image: linear-gradient(315deg, var(--roxo), var(--rosa), var(--amarelo));
+                z-index: 1;
+            }
+            .header .story-profile-name {
+                font-weight: bold;
+                text-align: center;
+            }
+            .header .header-story.own-profile .story-profile-name {
+                font-weight: normal;
+            }
+            
+            .aside {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100dvh;
+                width: 48px;
+                display: flex;
+                justify-content: center;
+            }
+            .aside-section {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex-grow: 1;
+                padding: 16px 8px;
+            }
+            .aside-items {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 12px;
+            }
+            .aside-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 8px;
+            }
+            .aside-icon {
+                height: 24px;
+                width: 24px;
+                padding: 12px;
+            }
+            .aside-item:hover {
+                background-color: var(--hover);
+            }
+            
+            .main {
+                position: relative;
+                top: 150px;
+                margin: 0 auto;
+                min-height: calc(100dvh - 150px);
+                width: 450px;
+            }
+            .main-section {
+                position: relative;
+                padding: 8px;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .main-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 4px;
+            }
+            .main-item > * {
+                width: 100%;
+            }
+            .main-item .post-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 4px;
+            }
+            .main-item .post-header-profile {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 4px;
+            }
+            .main-item .post-profile-mini-photo {
+                height: 24px;
+                width: 24px;
+                border-radius: 50%;
+            }
+            .main-item .post-profile-name {
+                display: flex;
+                flex-direction: column;
+                justify-items: center;
+                align-items: center;
+            }
+            .main-item .post-profile-at {
+                font-weight: bold;
+            }
+            .main-item .post-date {
+                font-weight: normal;
+                color: var(--cinza);
+            }
+            .main-item .post-header-verified {
+                height: 16px;
+                width: 16px;
+                padding: 0px 2px;
+            }
+            .main-item .post-image {
+                position: relative;
+                width: 100%;
+            }
+            .main-item .post-image img {
+                width: 100%;
+            }
+            .main-item .post-icons {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .main-item .post-icons-left {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .main-item .post-icons-right {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .main-item .post-icon-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+            }
+            .main-item .post-icon {
+                height: 24px;
+                width: 24px;
+                padding: 8px;
+                border-radius: 8px;
+            }
+            .main-item .post-icon:hover {
+                background-color: var(--hover);
+            }
+            .main-item .post-caption-at {
+                font-weight: bold;
+            }
+            .main-item .post-caption-verified {
+                height: 16px;
+                width: 16px;
+                padding: 0px 2px;
+            }
+            
+            .messages-button {
+                position: absolute;
+                bottom: 12px;
+                right: 12px;
+                border-radius: 24px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 50px;
+                width: 250px;
+                padding: 12px 24px;
+                box-shadow: 0px 0px 5px 5px var(--hover);
+                cursor: pointer;
+            }
+            .messages-button:hover {
+                background-color: var(--hover);
+            }
+            .messages-button .messages-group {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 12px;
+                font-weight: bold;
+            }
+            .messages-button .messages-icon {
+                height: 24px;
+                width: 24px;
+            }
+            .messages-button .messages-profile-photos {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 64px;
+            }
+            .messages-button .messages-profile-photo {
+                height: 24px;
+                width: 24px;
+                border-radius: 50%;
+                border: 2px solid var(--branco);
+            }
+            .messages-button .messages-profile-photo:nth(1) {
+                z-index: 3;
+            }
+            .messages-button .messages-profile-photo:nth(2) {
+                z-index: 2;
+            }
+            .messages-button .messages-profile-photo:nth(3) {
+                z-index: 1;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header class="header" style="grid-area: box-1">
+            <section class="header-section">
+                <ul class="header-items">
+                    <li class="header-story own-profile">
+                        <img class="story-profile-photo" src="./images/avatar-codecon.png"/>
+                        <span class="story-profile-name">Seu story</span>
+                    </li>
+                    <li class="header-story">
+                        <img class="story-profile-photo" src="./images/avatar-torvalds.png"/>
+                        <span class="story-profile-name">torvalds</span>
+                    </li>
+                    <li class="header-story">
+                        <img class="story-profile-photo" src="./images/avatar-gates.png"/>
+                        <span class="story-profile-name">gates</span>
+                    </li>
+                    <li class="header-story">
+                        <img class="story-profile-photo" src="./images/avatar-lovelace.png"/>
+                        <span class="story-profile-name">lovelace</span>
+                    </li>
+                    <li class="header-story">
+                        <img class="story-profile-photo" src="./images/avatar-stallman.png"/>
+                        <span class="story-profile-name">stallman</span>
+                    </li>
+                    <li class="header-story">
+                        <img class="story-profile-photo" src="./images/avatar-jobs.png"/>
+                        <span class="story-profile-name">jobs</span>
+                    </li>
+                </ul>
+            </section>
+        </header>
+        <aside class="aside" style="grid-area: box-2">
+            <section class="aside-section">
+                <ul class="aside-items">
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-instagram.svg"/>
+                    </li>
+                </ul>
+                <ul class="aside-items">
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-home.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-reels.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-direct-message.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-search.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-explore.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-heart.svg"/>
+                    </li>
+                </ul>
+                <ul class="aside-items">
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-hamburger.svg"/>
+                    </li>
+                    <li class="aside-item">
+                        <img class="aside-icon" src="./images/icon-squares.svg"/>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <main class="main" style="grid-area: box-3">
+            <section class="main-section">
+                <ul class="main-item">
+                    <li class="post-header">
+                        <ul class="post-header-profile">
+                            <li class="post-profile-photo">
+                                <img class="post-profile-mini-photo" src="./images/avatar-torvalds.png"/>
+                            </li>
+                            <li class="post-profile-name">
+                                <span class="post-profile-at">torvalds<img class="post-header-verified" src="./images/icon-verified.svg"/><span class="post-date">- 1 d</span></span>
+                                <span class="post-name">Vale do Silício</span>
+                            </li>
+                        </ul>
+                        <ul class="post-options">
+                            <img src="./images/icon-dots.svg"/>
+                        </ul>
+                    </li>
+                    <li class="post-image">
+                        <img src="./images/photo-torvalds.jpg"/>
+                    </li>
+                    <li class="post-icons">
+                        <ul class="post-icons-left">
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-heart.svg"/>
+                                <span>34</span>
+                            </li>
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-comment.svg"/>
+                                <span>4</span>
+                            </li>
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-direct-message.svg"/>
+                            </li>
+                        </ul>
+                        <ul class="post-icons-right">
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-save.svg"/>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="post-caption">
+                        <span class="post-caption-at">torvalds<img class="post-caption-verified" src="./images/icon-verified.svg"/></span>
+                        <span>Hoje me encontrei com um velho amigo, posso não concordar com ele, mas um dia eu faço ele usar Linux</span>
+                    </li>
+                </ul>
+                <ul class="main-item">
+                    <li class="post-header">
+                        <ul class="post-header-profile">
+                            <li class="post-profile-photo">
+                                <img class="post-profile-mini-photo" src="./images/avatar-jobs.png"/>
+                            </li>
+                            <li class="post-profile-name">
+                                <span class="post-profile-at">jobs<span class="post-date">- 1 d</span></span>
+                                <span class="post-name">Infinite loop</span>
+                            </li>
+                        </ul>
+                        <ul class="post-options">
+                            <img src="./images/icon-dots.svg"/>
+                        </ul>
+                    </li>
+                    <li class="post-image">
+                        <img src="./images/photo-jobs.jpg"/>
+                    </li>
+                    <li class="post-icons">
+                        <ul class="post-icons-left">
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-heart.svg"/>
+                                <span>67</span>
+                            </li>
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-comment.svg"/>
+                                <span>9</span>
+                            </li>
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-direct-message.svg"/>
+                            </li>
+                        </ul>
+                        <ul class="post-icons-right">
+                            <li class="post-icon-item">
+                                <img class="post-icon" src="./images/icon-save.svg"/>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="post-caption">
+                        <span class="post-caption-at">jobs</span>
+                        <span>Criador do iPhone</span>
+                    </li>
+                </ul>
+            </section>
+        </main>
+        <ul class="messages-button">
+            <li class="messages-group">
+                <img class="messages-icon" src="./images/icon-direct-message.svg"/>
+                <span>Mensagens</span>
+            </li>
+            <li class="messages-profile-photos">
+                <img class="messages-profile-photo" src="./images/avatar-torvalds.png"/>
+                <img class="messages-profile-photo" src="./images/avatar-gates.png"/>
+                <img class="messages-profile-photo" src="./images/avatar-lovelace.png"/>
+            </li>
+        </ul>
+    </body>
+</html>
